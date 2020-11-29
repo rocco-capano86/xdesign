@@ -5,6 +5,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.slf4j.LoggerFactory;
 import rock.training.xdesign.model.MunroDataSet;
+import rock.training.xdesign.utils.MunroUtils;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,8 +15,6 @@ import java.util.*;
 public class DataAccessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataAccessor.class);
-
-    private static final List<MunroDataSet> HEADERS = Arrays.asList(MunroDataSet.values());
 
     private List<Map<MunroDataSet, String>> records = new ArrayList<>();
 
@@ -32,7 +31,7 @@ public class DataAccessor {
             String[] values = null;
             while ((values = csvReader.readNext()) != null) {
                 if (headerProcessed) {
-                    records.add(transformToMap(Arrays.asList(values)));
+                    records.add(MunroUtils.transformToMap(Arrays.asList(values)));
                 } else {
 
                     headerProcessed = true;
@@ -42,14 +41,6 @@ public class DataAccessor {
             LOGGER.error("Exception during Data Set init!", e);
         }
         LOGGER.info("Loaded DataSet: {}", records);
-    }
-
-    private static Map<MunroDataSet, String> transformToMap(List<String> inputRow) {
-        Map<MunroDataSet, String> record = new HashMap<>();
-
-        HEADERS.forEach(h -> record.put(h, inputRow.get(record.size())));
-
-        return record;
     }
 
     public List<Map<MunroDataSet, String>> getRecords() {

@@ -11,10 +11,11 @@ class SearchMunrosTest {
 
     @BeforeEach
     public void init() {
-
+        controller = new SearchMunros();
     }
 
     @Test
     void searchMunros() {
+        controller.searchMunros(null);
     }
 }
