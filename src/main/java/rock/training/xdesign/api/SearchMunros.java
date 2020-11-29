@@ -13,11 +13,13 @@ import rock.training.xdesign.services.MunroService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class SearchMunros {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchMunros.class);
+    public static final String STATUS_SUCCESS = "SUCCESS";
 
     @Autowired
     private MunroService munroService;
@@ -31,7 +33,9 @@ public class SearchMunros {
 
         try {
             //TODO validation input
-            munroService.searchMunros(request);
+            List<Map<String, String>> results = munroService.searchMunros(request);
+            response.setStatus(STATUS_SUCCESS);
+            response.setResults(results);
         } catch (Exception e) {
             setErrorResponse(response);
             LOGGER.error("Error during call to service munroService", e);
